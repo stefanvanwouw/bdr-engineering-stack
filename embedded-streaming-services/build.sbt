@@ -42,8 +42,9 @@ lazy val commonSettings = Seq(
   crossPaths := false,
   scalaVersion := "2.11.8",
   libraryDependencies ++= Seq(
-    logbackTest
-
+    logbackTest,
+    scalaTest,
+    scalaMockTest
   ),
   assemblyMergeStrategy in assembly := {
     case PathList("javax", "inject", xs @ _*)         => MergeStrategy.first
