@@ -1,8 +1,7 @@
 import sbt._
 import sbt.Keys._
 
-publish := { } // Do not try to publish root project to bintray.
-bintrayRelease := { } // Do not publish root project to bintray.
+publish := { } // Do not try to publish root project.
 
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 val scalaMockTest = "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % "test"
@@ -46,16 +45,8 @@ lazy val commonSettings = Seq(
     scalaTest,
     scalaMockTest
   ),
-  assemblyMergeStrategy in assembly := {
-    case PathList("javax", "inject", xs @ _*)         => MergeStrategy.first
-    case x =>
-      val oldStrategy = (assemblyMergeStrategy in assembly).value
-      oldStrategy(x)
-  },
-  bintrayReleaseOnPublish in ThisBuild := false,
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html")),
-  publishMavenStyle := true,
-  bintrayOrganization := Some("bigdatarepublic")
+  publishMavenStyle := true
 )
 
 lazy val embeddedStreamingEntity = Project(id = "entity", base = file("entity")).
@@ -120,7 +111,5 @@ lazy val embeddedStreamingServicesApp = Project(id = "app", base = file("app")).
       logback,
       slf4jOverlog4j // Zookeeper logging should be captured by sl4fj
     ),
-    mainClass in assembly := Some("nl.bigdatarepublic.streaming.embedded.app.App"),
-    publish := { }, // Do not publish to bintray.
-    bintrayRelease := { } // Do not publish to bintray.
+    publish := { } // Do not publish.
   ).dependsOn(embeddedStreamingEntity, embeddedStreamingKafkaAdapter, embeddedStreamingRedisAdapter, embeddedStreamingZookeeperAdapter)
